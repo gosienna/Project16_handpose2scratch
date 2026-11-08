@@ -13,6 +13,10 @@ It uses handpose package provided by MediaPipe and TensorFlow.js. If you want to
 - Open https://champierre.github.io/handpose2scratch on Chrome browser.
 - Open Handpose2Scratch extension.
 
+## Auto-save
+
+When the editor opens, you are asked to choose a local folder. After that, the project is saved there as `<project name>.sb3` after every change. A file with the same name is overwritten, and a notice shows which file is being replaced. Auto-save needs Chrome or Edge.
+
 ## Sample project
 
 https://github.com/champierre/handpose2scratch/raw/master/sample_projects/handpose.sb3

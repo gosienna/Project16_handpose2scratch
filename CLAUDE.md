@@ -30,18 +30,23 @@ cp handpose2scratch/scratch-vm/src/extensions/scratch3_handpose2scratch/index.js
    node_modules/scratch-vm/src/extensions/scratch3_handpose2scratch/
 ```
 
-To change anything `install.sh` generates, first restore `index.jsx` and `extension-manager.js` from their `_orig` copies.
+To pick up changes to folder auto-save, copy `handpose2scratch/scratch-gui/src/lib/folder-auto-save-hoc.*` to `src/lib/`.
+
+To change anything `install.sh` generates, first restore `index.jsx`, `extension-manager.js` and `src/containers/gui.jsx` from their `_orig` copies.
 
 ## Architecture
 
 **`install.sh` is the integration layer.** From the scratch-gui root it:
 - installs `ml5@0.12.2` into `node_modules/scratch-vm` (the version is pinned here, since there is no manifest);
 - copies the extension into `node_modules/scratch-vm/src/extensions/` and uses `sed` to register it in `builtinExtensions` in `extension-manager.js`;
-- copies the icons and uses `sed` to prepend the library entry to `src/lib/libraries/extensions/index.jsx`.
+- copies the icons and uses `sed` to prepend the library entry to `src/lib/libraries/extensions/index.jsx`;
+- copies `folder-auto-save-hoc.jsx` and `.css` into `src/lib/` and uses `sed` to add the HOC to the `compose` chain in `src/containers/gui.jsx`.
 
 The extension's GUI metadata (name, description, `featured`, `helpLink`, etc.) therefore lives in `install.sh`, not in the extension source. The id `handpose2scratch` must stay consistent across `EXTENSION_ID`, the directory and icon filenames, and `getInfo().id`.
 
-**`scratch-vm/src/extensions/scratch3_handpose2scratch/index.js` is all of the runtime code.** Line 8 is a very long base64 icon, so read the file with an offset or grep it rather than loading that line.
+**`scratch-gui/src/lib/folder-auto-save-hoc.jsx` adds folder auto-save to the editor, independently of the extension.** It uses the File System Access API, so it is Chrome/Edge only and renders nothing extra elsewhere. It prompts for a folder on load, then on `PROJECT_CHANGED` or a title change writes `<title>.sb3` (debounced), overwriting a same-named file and showing a notice the first time it does. Saves are skipped when `vm.toJSON()` and the filename match the last load or save, so opening a project never writes.
+
+**`scratch-vm/src/extensions/scratch3_handpose2scratch/index.js` is all of the extension's runtime code.** Line 8 is a very long base64 icon, so read the file with an offset or grep it rather than loading that line.
 
 - The constructor enables video and starts `ml5.handpose` on Scratch's video element. The `predict` handler stores results in `this.landmarks`; reporter blocks only read that state. If several hands are detected, the last one wins, and values persist after a hand leaves the frame.
 - Reporters take a 1-based landmark number (1–21, as shown in the menu) and index a 0-based array, returning `""` until data exists.

@@ -22,6 +22,10 @@ MediaPipeとTensorFlow.jsが提供するhandposeパッケージを利用して�
 - Chromeで https://stretch3.github.io/ (ほかのオリジナル拡張機能が使用できます)または https://champierre.github.io/handpose2scratch/ を開きます。
 - 拡張機能一覧よりHandpose2Scratchを選びます。
 
+## 自動保存
+
+エディタを開くと、保存先のフォルダを選択するダイアログが表示されます。フォルダを選択すると、プロジェクトを変更するたびに `プロジェクト名.sb3` としてそのフォルダに自動保存されます。同じ名前のファイルは上書きされ、上書きするファイル名が通知されます。自動保存を利用するにはChromeまたはEdgeが必要です。
+
 ## サンプルプロジェクト
 
 https://github.com/champierre/handpose2scratch/raw/master/sample_projects/handpose.sb3

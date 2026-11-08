@@ -39,3 +39,8 @@ DESCRIPTION="\
         helpLink: 'https://champierre.github.io/handpose2scratch/'${LF}\
     },"
 sed -e "s|^export default \[$|import ${EXTENSION_ID}IconURL from './${EXTENSION_ID}/${EXTENSION_ID}.png';${LF}import ${EXTENSION_ID}InsetIconURL from './${EXTENSION_ID}/${EXTENSION_ID}-small.png';${LF}${LF}export default [${LF}${DESCRIPTION}|g" src/lib/libraries/extensions/index.jsx_orig > src/lib/libraries/extensions/index.jsx
+
+cp ${EXTENSION_ID}/scratch-gui/src/lib/folder-auto-save-hoc.jsx src/lib/
+cp ${EXTENSION_ID}/scratch-gui/src/lib/folder-auto-save-hoc.css src/lib/
+mv src/containers/gui.jsx src/containers/gui.jsx_orig
+sed -e "s|^import ProjectSaverHOC from '../lib/project-saver-hoc.jsx';$|&${LF}import FolderAutoSaveHOC from '../lib/folder-auto-save-hoc.jsx';|" -e "s|^    ProjectSaverHOC,$|&${LF}    FolderAutoSaveHOC,|" src/containers/gui.jsx_orig > src/containers/gui.jsx
